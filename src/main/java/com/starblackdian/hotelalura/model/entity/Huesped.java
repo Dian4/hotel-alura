@@ -3,8 +3,8 @@ package com.starblackdian.hotelalura.model.entity;
 import java.sql.Date;
 
 public class Huesped {
-	
-	private int id;
+
+    private int id;
 	private String nombre;
 	private String apellido;
 	private Date fechaNacimiento;
@@ -58,4 +58,10 @@ public class Huesped {
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
+	
+	@Override
+    public String toString() {
+        return "Huesped [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", fechaNacimiento="
+                + fechaNacimiento + ", nacionalidad=" + nacionalidad + ", telefono=" + telefono + "]";
+    }
 }
