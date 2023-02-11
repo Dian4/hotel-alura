@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TitledPane animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="518.0" prefWidth="872.0" text="Inicio de Sesión" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<TitledPane animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="518.0" prefWidth="872.0" text="Inicio de Sesión" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.starblackdian.hotelalura.controller.LoginController">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="474.0" prefWidth="896.0">
          <children>
@@ -24,11 +24,11 @@
                <font>
                   <Font size="18.0" />
                </font></Label>
-            <Label layoutX="283.0" layoutY="190.0" text="Usuario:" />
-            <Label layoutX="263.0" layoutY="244.0" text="Contraseña:" />
-            <TextField layoutX="337.0" layoutY="186.0" prefHeight="25.0" prefWidth="204.0" />
-            <PasswordField layoutX="336.0" layoutY="240.0" prefHeight="25.0" prefWidth="206.0" />
-            <Button layoutX="278.0" layoutY="307.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="278.0" text="Entrar" />
+            <Label layoutX="277.0" layoutY="190.0" text="Usuario:" />
+            <Label layoutX="253.0" layoutY="244.0" text="Contraseña:" />
+            <TextField fx:id="txtUsuario" layoutX="337.0" layoutY="186.0" prefHeight="25.0" prefWidth="204.0" />
+            <PasswordField fx:id="txtPassword" layoutX="336.0" layoutY="240.0" prefHeight="25.0" prefWidth="206.0" />
+            <Button layoutX="278.0" layoutY="307.0" mnemonicParsing="false" onAction="#iniciarSesion" prefHeight="25.0" prefWidth="278.0" text="Entrar" />
          </children></AnchorPane>
   </content>
 </TitledPane>

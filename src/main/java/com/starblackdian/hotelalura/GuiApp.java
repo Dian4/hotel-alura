@@ -22,6 +22,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class GuiApp extends Application {
+
+    public static Stage PRIMARY_STAGE;
     
     public static void ejecutarApp(String[] args) {
         launch(args);
@@ -29,6 +31,8 @@ public class GuiApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        PRIMARY_STAGE = primaryStage;
+
         primaryStage.setTitle("Hotel Alura - Sistema de Gestión");
         primaryStage.setResizable(false);
         
