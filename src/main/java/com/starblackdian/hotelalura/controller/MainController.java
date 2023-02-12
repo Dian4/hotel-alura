@@ -1,8 +1,12 @@
 package com.starblackdian.hotelalura.controller;
 
 import java.sql.Date;
+import java.util.List;
+import java.util.Optional;
 
+import com.starblackdian.hotelalura.model.dao.HuespedDao;
 import com.starblackdian.hotelalura.model.entity.Huesped;
+import com.starblackdian.hotelalura.util.DialogUtils;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,6 +48,22 @@ public class MainController {
         
     }
 
+    public void agregarNuevoHuesped() {
+        final Optional<Huesped> resultado = DialogUtils.agregarHuespedDialog();
+
+        resultado.ifPresent(huesped -> {
+            try (HuespedDao dao = new HuespedDao()) {
+                dao.crear(huesped);
+
+                DialogUtils.mostrarInfo("Registro Exitoso",
+                    "Se ha registrado al huésped con éxito");
+                
+                tblHuespedes.getItems().clear();
+                tblHuespedes.setItems(obtenerHuespedes());
+            }
+        });
+    }
+
     private void inicializarTablaHuespedes() {
         colIdHuesped.setCellValueFactory(new PropertyValueFactory<Huesped, Integer>("id"));
         colNombre.setCellValueFactory(new PropertyValueFactory<Huesped, String>("nombre"));
@@ -56,23 +76,10 @@ public class MainController {
     }
 
     private ObservableList<Huesped> obtenerHuespedes() {
-        final Huesped h1 = new Huesped();
-        final Huesped h2 = new Huesped();
+        try (HuespedDao dao = new HuespedDao()) {
+            final List<Huesped> huespedes = dao.listarTodos();
 
-        h1.setId(1);
-        h1.setNombre("Gatitos");
-        h1.setApellido("Babie");
-        h1.setFechaNacimiento(new Date(453453454234L));
-        h1.setNacionalidad("Gatuno");
-        h1.setTelefono("01-800-GATITOS_BABIE");
-
-        h2.setId(2);
-        h2.setNombre("Bolo");
-        h2.setApellido("Ladrador");
-        h2.setFechaNacimiento(new Date(153453454234L));
-        h2.setNacionalidad("Lolesco");
-        h2.setTelefono("01-800-MUSARAÑA");
-
-        return FXCollections.observableArrayList(h1, h2);
+            return FXCollections.observableArrayList(huespedes);
+        }
     }
 }
