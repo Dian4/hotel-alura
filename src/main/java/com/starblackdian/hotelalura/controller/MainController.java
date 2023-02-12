@@ -64,6 +64,36 @@ public class MainController {
         });
     }
 
+    public void verReservas() {
+        
+    }
+
+    public void modificarHuesped() {
+        final Huesped huesped = tblHuespedes.getSelectionModel().getSelectedItem();
+
+        if (huesped == null) {
+            DialogUtils.mostrarAdvertencia("Selección vacía", "Seleccione un huésped.");
+        } else {
+            final Optional<Huesped> resultado = DialogUtils.agregarHuespedDialog(huesped);
+
+            resultado.ifPresent(huespedModificado -> {
+                try (HuespedDao dao = new HuespedDao()) {
+                    dao.actualizar(huespedModificado);
+
+                    DialogUtils.mostrarInfo("Modificación Exitosa",
+                            "Se han modificado los datos del huésped con éxito");
+
+                    tblHuespedes.getItems().clear();
+                    tblHuespedes.setItems(obtenerHuespedes());
+                }
+            });
+        }
+    }
+
+    public void eliminarHuesped() {
+
+    }
+
     private void inicializarTablaHuespedes() {
         colIdHuesped.setCellValueFactory(new PropertyValueFactory<Huesped, Integer>("id"));
         colNombre.setCellValueFactory(new PropertyValueFactory<Huesped, String>("nombre"));

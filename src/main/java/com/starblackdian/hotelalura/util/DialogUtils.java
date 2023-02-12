@@ -28,14 +28,21 @@ public class DialogUtils {
     public static void mostrarAdvertencia(String titulo, String cuerpo) {
         mostrarAlert(titulo, cuerpo, AlertType.WARNING);
     }
-    
+
     public static Optional<Huesped> agregarHuespedDialog() {
+        return agregarHuespedDialog(null);
+    }
+    
+    public static Optional<Huesped> agregarHuespedDialog(Huesped existente) {
         final Dialog<Huesped> dialog = new Dialog<>();
 
-        dialog.setTitle("Nuevo Huésped");
-        dialog.setHeaderText("Por favor, ingrese los datos del nuevo huésped.");
+        final String titulo = existente == null ? "Nuevo Huésped" : "Modificar Datos de Huésped";
+        final String textoBoton = existente == null ? "Agregar" : "Modificar";
 
-        final ButtonType agregarButtonType = new ButtonType("Agregar", ButtonData.OK_DONE);
+        dialog.setTitle(titulo);
+        dialog.setHeaderText("Por favor, ingrese los datos del huésped.");
+
+        final ButtonType agregarButtonType = new ButtonType(textoBoton, ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(agregarButtonType, ButtonType.CANCEL);
 
         final GridPane grid = new GridPane();
@@ -46,9 +53,18 @@ public class DialogUtils {
         final TextField txtNombre = new TextField();
         final TextField txtApellido = new TextField();
         final DatePicker dtpFechaNac = new DatePicker(LocalDate.now());
-        dtpFechaNac.setEditable(false);
         final TextField txtNacionalidad = new TextField();
         final TextField txtTelefono = new TextField();
+
+        if (existente != null) {
+            txtNombre.setText(existente.getNombre());
+            txtApellido.setText(existente.getApellido());
+            dtpFechaNac.setValue(existente.getFechaNacimiento().toLocalDate());
+            txtNacionalidad.setText(existente.getNacionalidad());
+            txtTelefono.setText(existente.getTelefono());    
+        }
+        
+        dtpFechaNac.setEditable(false);
 
         grid.add(new Label("Nombre:"), 0, 0);
         grid.add(txtNombre, 1, 0);
@@ -72,6 +88,10 @@ public class DialogUtils {
                 huesped.setFechaNacimiento(Date.valueOf(dtpFechaNac.getValue()));
                 huesped.setNacionalidad(txtNacionalidad.getText());
                 huesped.setTelefono(txtTelefono.getText());
+
+                if (existente != null) {
+                    huesped.setId(existente.getId());
+                }
 
                 return huesped;
             }

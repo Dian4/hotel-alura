@@ -50,6 +50,9 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
+                  <Button fx:id="btnVerReservas" layoutX="810.0" layoutY="30.0" mnemonicParsing="false" onAction="#verReservas" prefHeight="31.0" prefWidth="194.0" text="Ver Reservas" />
+                  <Button fx:id="btnModificarHuesped" layoutX="810.0" layoutY="88.0" mnemonicParsing="false" onAction="#modificarHuesped" prefHeight="31.0" prefWidth="194.0" text="Modificar Datos" />
+                  <Button fx:id="btnEliminarHuesped" layoutX="810.0" layoutY="147.0" mnemonicParsing="false" onAction="#eliminarHuesped" prefHeight="31.0" prefWidth="194.0" text="Eliminar Huésped" />
                </children></AnchorPane>
       </content>
     </Tab>
