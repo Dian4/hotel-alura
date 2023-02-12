@@ -11,6 +11,7 @@ import com.starblackdian.hotelalura.util.DialogUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -91,7 +92,28 @@ public class MainController {
     }
 
     public void eliminarHuesped() {
+        final Huesped huesped = tblHuespedes.getSelectionModel().getSelectedItem();
 
+        if (huesped == null) {
+            DialogUtils.mostrarAdvertencia("Selección vacía", "Seleccione un huésped.");
+        } else {
+            final String nombre = huesped.getId() + " - " + huesped.getNombre() + " " + huesped.getApellido();
+
+            final Optional<ButtonType> result = DialogUtils.mostrarConfirmacion("Eliminar Huésped",
+                "¿Desea eliminar al huésped '" + nombre + "'?");
+            
+            if (result.get() == ButtonType.OK) {
+                try (HuespedDao dao = new HuespedDao()) {
+                    dao.eliminar(huesped.getId());
+
+                    DialogUtils.mostrarInfo("Huésped Eliminado",
+                        "Se ha eliminado al huésped '" + nombre + "' con éxito.");
+
+                    tblHuespedes.getItems().clear();
+                    tblHuespedes.setItems(obtenerHuespedes());
+                }
+            }
+        }
     }
 
     private void inicializarTablaHuespedes() {

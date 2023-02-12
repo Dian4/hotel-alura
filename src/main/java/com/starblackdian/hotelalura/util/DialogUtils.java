@@ -18,6 +18,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 
 public class DialogUtils {
 
@@ -27,6 +28,16 @@ public class DialogUtils {
 
     public static void mostrarAdvertencia(String titulo, String cuerpo) {
         mostrarAlert(titulo, cuerpo, AlertType.WARNING);
+    }
+
+    public static Optional<ButtonType> mostrarConfirmacion(String titulo, String cuerpo) {
+        final Alert alert = new Alert(AlertType.CONFIRMATION);
+
+        alert.setTitle(titulo);
+        alert.setContentText(cuerpo);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+
+        return alert.showAndWait();
     }
 
     public static Optional<Huesped> agregarHuespedDialog() {
@@ -120,6 +131,7 @@ public class DialogUtils {
 
         alert.setTitle(titulo);
         alert.setContentText(cuerpo);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait();
     }
 }
