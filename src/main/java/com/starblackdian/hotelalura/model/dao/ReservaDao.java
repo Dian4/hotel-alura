@@ -44,6 +44,36 @@ public class ReservaDao extends AbstractDao<Reserva> {
 		}
 	}
 
+	public List<Reserva> listarPorHuespedId(int idHuesped) {
+		final String sql = "SELECT * from reserva WHERE idhuesped = ?";
+
+		try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setInt(1, idHuesped);
+
+			try (ResultSet rs = stmt.executeQuery()) {
+				final List<Reserva> lista = new ArrayList<>();
+
+				while (rs.next()) {
+					final Reserva reserva = new Reserva();
+
+					reserva.setId(rs.getInt("id"));
+					reserva.setFechaEntrada(rs.getDate("fechaentrada"));
+					reserva.setFechaSalida(rs.getDate("fechasalida"));
+					reserva.setValor(rs.getBigDecimal("valor"));
+					reserva.setFormaPago(rs.getString("formapago"));
+					reserva.setIdHuesped(rs.getInt("idhuesped"));
+
+					lista.add(reserva);
+				}
+
+				return lista;
+			}
+
+		} catch (SQLException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
 	@Override
 	public Reserva buscarPorId(int id) {
 		final String sql = "SELECT * from reserva WHERE id = ?";

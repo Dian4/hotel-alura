@@ -1,11 +1,17 @@
 package com.starblackdian.hotelalura.util;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
+import com.starblackdian.hotelalura.model.dao.ReservaDao;
 import com.starblackdian.hotelalura.model.entity.Huesped;
+import com.starblackdian.hotelalura.model.entity.Reserva;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
@@ -16,8 +22,12 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 
 public class DialogUtils {
@@ -124,6 +134,44 @@ public class DialogUtils {
         });
 
         return dialog.showAndWait();
+    }
+
+    public static void mostrarReservasDeHuesped(Huesped huesped) {
+        final Alert alert = new Alert(AlertType.INFORMATION);
+        final String nombreHuesped = huesped.getId() + " - " + huesped.getNombre() + " " + huesped.getApellido();
+
+        alert.setTitle("Reservas del huésped");
+        alert.setHeaderText("Estas son las reservas a nombre del huésped: " + nombreHuesped);
+
+        final TableView<Reserva> tblReservas = new TableView<>();
+        final TableColumn<Reserva, Date> colFechaEntrada = new TableColumn<>("Fecha de Entrada");
+        final TableColumn<Reserva, Date> colFechaSalida = new TableColumn<>("Fecha de Salida");
+        final TableColumn<Reserva, BigDecimal> colValor = new TableColumn<>("Valor");
+        final TableColumn<Reserva, String> colFormaPago = new TableColumn<>("Forma de Pago");
+
+        colFechaEntrada.setCellValueFactory(new PropertyValueFactory<Reserva, Date>("fechaentrada"));
+        colFechaSalida.setCellValueFactory(new PropertyValueFactory<Reserva, Date>("fechasalida"));
+        colValor.setCellValueFactory(new PropertyValueFactory<Reserva, BigDecimal>("valor"));
+        colFormaPago.setCellValueFactory(new PropertyValueFactory<Reserva, String>("formapago"));
+
+        tblReservas.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tblReservas.getColumns().addAll(colFechaEntrada, colFechaSalida, colValor, colFormaPago);
+
+        try (ReservaDao dao = new ReservaDao()) {
+            final List<Reserva> reservas = dao.listarPorHuespedId(huesped.getId());
+            final ObservableList<Reserva> reservasFilas = FXCollections.observableArrayList(reservas);
+
+            tblReservas.setItems(reservasFilas);
+        }
+
+        GridPane.setVgrow(tblReservas, Priority.ALWAYS);
+        GridPane.setHgrow(tblReservas, Priority.ALWAYS);
+
+        final GridPane gridPane = new GridPane();
+        gridPane.add(tblReservas, 0, 0);
+
+        alert.getDialogPane().setExpandableContent(gridPane);
+        alert.show();
     }
 
     private static void mostrarAlert(String titulo, String cuerpo, AlertType tipoAlerta) {
