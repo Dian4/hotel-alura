@@ -84,12 +84,12 @@
                   <Button layoutX="511.0" layoutY="128.0" mnemonicParsing="false" onAction="#agregarNuevaReserva" prefHeight="25.0" prefWidth="163.0" text="Nueva Reserva" />
                   <TableView fx:id="tblReservas" layoutX="6.0" layoutY="164.0" prefHeight="419.0" prefWidth="1041.0" style="-fx-background-color: rgba(0, 100, 100, 0.7);">
                     <columns>
-                      <TableColumn fx:id="colIdReserva" prefWidth="75.0" text="Id" />
-                      <TableColumn fx:id="colHuesped" prefWidth="75.0" text="Huésped" />
-                        <TableColumn fx:id="colFechaEntrada" prefWidth="75.0" text="Fecha de Entrada" />
-                        <TableColumn fx:id="colFechaSalida" prefWidth="75.0" text="Fecha de Salida" />
-                        <TableColumn fx:id="colValor" prefWidth="75.0" text="Valor" />
-                        <TableColumn fx:id="colFormaPago" prefWidth="75.0" text="Forma de Pago" />
+                      <TableColumn fx:id="colIdReserva" prefWidth="75.0" style="-fx-background-color: rgba(0, 100, 100, 0.6);" text="Id" />
+                      <TableColumn fx:id="colHuesped" prefWidth="75.0" style="-fx-background-color: rgba(0, 100, 100, 0.6);" text="Huésped" />
+                        <TableColumn fx:id="colFechaEntrada" prefWidth="75.0" style="-fx-background-color: rgba(0, 100, 100, 0.6);" text="Fecha de Entrada" />
+                        <TableColumn fx:id="colFechaSalida" prefWidth="75.0" style="-fx-background-color: rgba(0, 100, 100, 0.6);" text="Fecha de Salida" />
+                        <TableColumn fx:id="colValor" prefWidth="75.0" style="-fx-background-color: rgba(0, 100, 100, 0.6);" text="Valor" />
+                        <TableColumn fx:id="colFormaPago" prefWidth="75.0" style="-fx-background-color: rgba(0, 100, 100, 0.6);" text="Forma de Pago" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

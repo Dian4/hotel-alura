@@ -252,10 +252,10 @@ public class DialogUtils {
         final TableColumn<Reserva, BigDecimal> colValor = new TableColumn<>("Valor");
         final TableColumn<Reserva, String> colFormaPago = new TableColumn<>("Forma de Pago");
 
-        colFechaEntrada.setCellValueFactory(new PropertyValueFactory<Reserva, Date>("fechaentrada"));
-        colFechaSalida.setCellValueFactory(new PropertyValueFactory<Reserva, Date>("fechasalida"));
+        colFechaEntrada.setCellValueFactory(new PropertyValueFactory<Reserva, Date>("fechaEntrada"));
+        colFechaSalida.setCellValueFactory(new PropertyValueFactory<Reserva, Date>("fechaSalida"));
         colValor.setCellValueFactory(new PropertyValueFactory<Reserva, BigDecimal>("valor"));
-        colFormaPago.setCellValueFactory(new PropertyValueFactory<Reserva, String>("formapago"));
+        colFormaPago.setCellValueFactory(new PropertyValueFactory<Reserva, String>("formaPago"));
 
         tblReservas.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tblReservas.getColumns().addAll(colFechaEntrada, colFechaSalida, colValor, colFormaPago);
