@@ -164,7 +164,26 @@ public class MainController {
     }
 
     public void eliminarReserva() {
+        final Reserva reserva = tblReservas.getSelectionModel().getSelectedItem();
 
+        if (reserva == null) {
+            DialogUtils.mostrarAdvertencia("Selección vacía", "Seleccione una reserva.");
+        } else {
+            final Optional<ButtonType> result = DialogUtils.mostrarConfirmacion("Eliminar Reserva",
+                "¿Desea eliminar la reserva '" + reserva.getId() + "'?");
+            
+            if (result.get() == ButtonType.OK) {
+                try (ReservaDao dao = new ReservaDao()) {
+                    dao.eliminar(reserva.getId());
+
+                    DialogUtils.mostrarInfo("Reserva eliminada",
+                        "La reserva se ha eliminado con éxito.");
+
+                    tblReservas.getItems().clear();
+                    tblReservas.setItems(obtenerReservas());
+                }
+            }
+        }
     }
 
     public void eliminarHuesped() {
