@@ -17,7 +17,7 @@ public class ReservaDao extends AbstractDao<Reserva> {
 	
 	@Override
 	public List<Reserva> listarTodos() {
-		final String sql = "SELECT * from reserva";
+		final String sql = "SELECT r.*, h.nombre, h.apellido FROM reserva r INNER JOIN huesped h ON r.idhuesped = h.id";
 		
 		try (
 			Statement stmt = conn.createStatement();
@@ -28,12 +28,16 @@ public class ReservaDao extends AbstractDao<Reserva> {
 			while (rs.next()) {
 				final Reserva reserva = new Reserva();
 				
-				reserva.setId(rs.getInt("id"));
-				reserva.setFechaEntrada(rs.getDate("fechaentrada"));
-				reserva.setFechaSalida(rs.getDate("fechasalida"));
-				reserva.setValor(rs.getBigDecimal("valor"));
-				reserva.setFormaPago(rs.getString("formapago"));
-				reserva.setIdHuesped(rs.getInt("idhuesped"));
+				reserva.setId(rs.getInt("r.id"));
+				reserva.setFechaEntrada(rs.getDate("r.fechaentrada"));
+				reserva.setFechaSalida(rs.getDate("r.fechasalida"));
+				reserva.setValor(rs.getBigDecimal("r.valor"));
+				reserva.setFormaPago(rs.getString("r.formapago"));
+				reserva.setIdHuesped(rs.getInt("r.idhuesped"));
+
+				final String nombre = rs.getString("h.nombre");
+				final String apellido = rs.getString("h.apellido");
+				reserva.setHuesped(nombre + " " + apellido);
 				
 				lista.add(reserva);
 			}
