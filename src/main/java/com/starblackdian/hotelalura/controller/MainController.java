@@ -142,7 +142,25 @@ public class MainController {
     }
 
     public void modificarReserva() {
+        final Reserva reserva = tblReservas.getSelectionModel().getSelectedItem();
 
+        if (reserva == null) {
+            DialogUtils.mostrarAdvertencia("Selección vacía", "Seleccione una reserva.");
+        } else {
+            final Optional<Reserva> resultado = DialogUtils.agregarReservaDialog(reserva);
+
+            resultado.ifPresent(r -> {
+                try (ReservaDao dao = new ReservaDao()) {
+                    dao.actualizar(r);
+
+                    DialogUtils.mostrarInfo("Modificación Exitosa",
+                        "La reserva se ha modificado con éxito");
+                    
+                    tblReservas.getItems().clear();
+                    tblReservas.setItems(obtenerReservas());
+                }
+            });
+        }
     }
 
     public void eliminarReserva() {

@@ -125,14 +125,15 @@ public class ReservaDao extends AbstractDao<Reserva> {
 
 	@Override
 	public void actualizar(Reserva entidad) {
-		final String sql = "UPDATE reserva SET fechaentrada = ?, fechasalida = ?, valor = ?, formapago = ? WHERE id = ?";
+		final String sql = "UPDATE reserva SET fechaentrada = ?, fechasalida = ?, valor = ?, formapago = ?, idhuesped= ? WHERE id = ?";
 		
 		try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 			stmt.setDate(1, entidad.getFechaEntrada());
 			stmt.setDate(2, entidad.getFechaSalida());
 			stmt.setBigDecimal(3, entidad.getValor());
 			stmt.setString(4, entidad.getFormaPago());
-			stmt.setInt(5, entidad.getId());
+			stmt.setInt(5, entidad.getIdHuesped());
+			stmt.setInt(6, entidad.getId());
 			
 			stmt.execute();
 		} catch (SQLException ex) {
