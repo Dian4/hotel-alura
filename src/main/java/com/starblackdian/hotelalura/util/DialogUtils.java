@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import com.starblackdian.hotelalura.model.dao.HuespedDao;
 import com.starblackdian.hotelalura.model.dao.ReservaDao;
 import com.starblackdian.hotelalura.model.entity.Huesped;
 import com.starblackdian.hotelalura.model.entity.Reserva;
@@ -19,6 +20,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -136,6 +138,107 @@ public class DialogUtils {
         return dialog.showAndWait();
     }
 
+    public static Optional<Reserva> agregarReservaDialog() {
+        return agregarReservaDialog(null);
+    }
+
+    public static Optional<Reserva> agregarReservaDialog(Reserva existente) {
+        final Dialog<Reserva> dialog = new Dialog<>();
+
+        final String titulo = existente == null ? "Nueva Reserva" : "Editar Reserva";
+        final String textoBoton = existente == null ? "Agregar" : "Modificar";
+
+        dialog.setTitle(titulo);
+        dialog.setHeaderText("Por favor, ingrese los datos de la reserva.");
+
+        final ButtonType agregarButtonType = new ButtonType(textoBoton, ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(agregarButtonType, ButtonType.CANCEL);
+
+        final GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        final DatePicker dtpFechaEntrada = new DatePicker(LocalDate.now());
+        final DatePicker dtpFechaSalida = new DatePicker(LocalDate.now());
+        final TextField txtValor = new TextField();
+        final TextField txtFormaPago = new TextField();
+        final ComboBox<Huesped> cmbHuesped = new ComboBox<>(obtenerHuespedes());
+
+        if (existente != null) {
+            dtpFechaEntrada.setValue(existente.getFechaEntrada().toLocalDate());
+            dtpFechaSalida.setValue(existente.getFechaSalida().toLocalDate());
+            txtValor.setText(existente.getValor().toString());
+            txtFormaPago.setText(existente.getFormaPago());
+            
+            for (Huesped huesped : cmbHuesped.getItems()) {
+                if (huesped.getId() == existente.getIdHuesped()) {
+                    cmbHuesped.getSelectionModel().select(huesped);
+                }
+            }
+        }
+
+        dtpFechaEntrada.setEditable(false);
+        dtpFechaSalida.setEditable(false);
+
+        grid.add(new Label("Fecha de Entrada:"), 0, 0);
+        grid.add(dtpFechaEntrada, 1, 0);
+        grid.add(new Label("Fecha de Salida:"), 0, 1);
+        grid.add(dtpFechaSalida, 1, 1);
+        grid.add(new Label("Importe de la instancia:"), 0, 2);
+        grid.add(txtValor, 1, 2);
+        grid.add(new Label("Forma de Pago:"), 0, 3);
+        grid.add(txtFormaPago, 1, 3);
+        grid.add(new Label("Huésped:"), 0, 4);
+        grid.add(cmbHuesped, 1, 4);
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(pressedButton -> {
+            if (pressedButton == agregarButtonType) {
+                final Reserva reserva = new Reserva();
+
+                reserva.setFechaEntrada(Date.valueOf(dtpFechaEntrada.getValue()));
+                reserva.setFechaSalida(Date.valueOf(dtpFechaSalida.getValue()));
+                reserva.setValor(new BigDecimal(txtValor.getText()));
+                reserva.setFormaPago(txtFormaPago.getText());
+                reserva.setIdHuesped(cmbHuesped.getSelectionModel().getSelectedItem().getId());
+
+                if (existente != null) {
+                    reserva.setId(existente.getId());
+                }
+
+                return reserva;
+            }
+
+            return null;
+        });
+
+        final Button btnOk = (Button) dialog.getDialogPane().lookupButton(agregarButtonType);
+        btnOk.addEventFilter(ActionEvent.ACTION, ev -> {
+            final boolean formaPagoVacia = txtFormaPago.getText().isBlank();
+            final boolean hayHuespedSeleccionado = cmbHuesped.getValue() == null;
+
+            if (formaPagoVacia || hayHuespedSeleccionado) {
+                mostrarAdvertencia("Parámetros obligatorios",
+                    "La forma de pago, el importe y el huésped son obligatorios.");
+
+                ev.consume();
+            }
+
+            try {
+                new BigDecimal(txtValor.getText());
+            } catch (Exception e) {
+                mostrarAdvertencia("Parámetros inválidos",
+                    "El importe debe ser un número entero o decimal.");
+
+                ev.consume();
+            }
+        });
+
+        return dialog.showAndWait();
+    }
+
     public static void mostrarReservasDeHuesped(Huesped huesped) {
         final Alert alert = new Alert(AlertType.INFORMATION);
         final String nombreHuesped = huesped.getId() + " - " + huesped.getNombre() + " " + huesped.getApellido();
@@ -181,5 +284,13 @@ public class DialogUtils {
         alert.setContentText(cuerpo);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait();
+    }
+
+    private static ObservableList<Huesped> obtenerHuespedes() {
+        try (HuespedDao dao = new HuespedDao()) {
+            final List<Huesped> huespedes = dao.listarTodos();
+
+            return FXCollections.observableArrayList(huespedes);
+        }
     }
 }

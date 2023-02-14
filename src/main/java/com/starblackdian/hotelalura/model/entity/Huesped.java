@@ -61,7 +61,6 @@ public class Huesped {
 	
 	@Override
     public String toString() {
-        return "Huesped [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", fechaNacimiento="
-                + fechaNacimiento + ", nacionalidad=" + nacionalidad + ", telefono=" + telefono + "]";
+        return "ID: " + id + " - " + nombre + " " + apellido;
     }
 }

@@ -122,7 +122,19 @@ public class MainController {
     }
 
     public void agregarNuevaReserva() {
+        final Optional<Reserva> resultado = DialogUtils.agregarReservaDialog();
 
+        resultado.ifPresent(reserva -> {
+            try (ReservaDao dao = new ReservaDao()) {
+                dao.crear(reserva);
+
+                DialogUtils.mostrarInfo("Registro Exitoso",
+                        "Se ha registrado la reserva con éxito.");
+
+                tblReservas.getItems().clear();
+                tblReservas.setItems(obtenerReservas());
+            }
+        });
     }
 
     public void verHuesped() {
