@@ -97,6 +97,22 @@ public class MainController {
         }
     }
 
+    public void agregarNuevaReserva() {
+
+    }
+
+    public void verHuesped() {
+
+    }
+
+    public void modificarReserva() {
+
+    }
+
+    public void eliminarReserva() {
+        
+    }
+
     public void eliminarHuesped() {
         final Huesped huesped = tblHuespedes.getSelectionModel().getSelectedItem();
 

@@ -79,9 +79,9 @@
                         <Label text="Buscar por número de reserva:" textFill="#07ee6f" />
                      </children>
                   </StackPane>
-                  <TextField layoutX="214.0" layoutY="128.0" />
+                  <TextField fx:id="txtBuscarReserva" layoutX="214.0" layoutY="128.0" />
                   <Button layoutX="372.0" layoutY="128.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="71.0" text="Buscar" />
-                  <Button layoutX="511.0" layoutY="128.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="163.0" text="Nueva Reserva" />
+                  <Button layoutX="511.0" layoutY="128.0" mnemonicParsing="false" onAction="#agregarNuevaReserva" prefHeight="25.0" prefWidth="163.0" text="Nueva Reserva" />
                   <TableView layoutX="6.0" layoutY="164.0" prefHeight="419.0" prefWidth="1041.0" style="-fx-background-color: rgba(0, 100, 100, 0.7);">
                     <columns>
                       <TableColumn prefWidth="75.0" text="Id" />
@@ -96,6 +96,9 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
+                  <Button layoutX="830.0" layoutY="22.0" mnemonicParsing="false" onAction="#verHuesped" prefHeight="25.0" prefWidth="163.0" text="Ver Huésped" />
+                  <Button layoutX="830.0" layoutY="75.0" mnemonicParsing="false" onAction="#modificarReserva" prefHeight="25.0" prefWidth="163.0" text="Modificar Reserva" />
+                  <Button layoutX="830.0" layoutY="128.0" mnemonicParsing="false" onAction="#eliminarReserva" prefHeight="25.0" prefWidth="163.0" text="Eliminar Reserva" />
                </children></AnchorPane>
       </content>
     </Tab>
