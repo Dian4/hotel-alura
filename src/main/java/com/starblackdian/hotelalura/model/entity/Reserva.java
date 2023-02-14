@@ -6,6 +6,7 @@ import java.sql.Date;
 public class Reserva {
 	
 	private int id;
+	private String huesped;
 	private Date fechaEntrada;
 	private Date fechaSalida;
 	private  BigDecimal valor;
@@ -47,5 +48,11 @@ public class Reserva {
 	}
 	public void setIdHuesped(int idHuesped) {
 		this.idHuesped = idHuesped;
+	}
+	public String getHuesped() {
+		return huesped;
+	}
+	public void setHuesped(String huesped) {
+		this.huesped = huesped;
 	}
 }

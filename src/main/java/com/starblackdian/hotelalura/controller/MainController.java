@@ -1,11 +1,14 @@
 package com.starblackdian.hotelalura.controller;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
 import com.starblackdian.hotelalura.model.dao.HuespedDao;
+import com.starblackdian.hotelalura.model.dao.ReservaDao;
 import com.starblackdian.hotelalura.model.entity.Huesped;
+import com.starblackdian.hotelalura.model.entity.Reserva;
 import com.starblackdian.hotelalura.util.DialogUtils;
 
 import javafx.collections.FXCollections;
@@ -44,9 +47,30 @@ public class MainController {
     private TableColumn<Huesped, String> colTelefono;
 
     @FXML
+    private TableView<Reserva> tblReservas;
+
+    @FXML
+    private TableColumn<Reserva, Integer> colIdReserva;
+
+    @FXML
+    private TableColumn<Reserva, String> colHuesped;
+
+    @FXML
+    private TableColumn<Reserva, Date> colFechaEntrada;
+
+    @FXML
+    private TableColumn<Reserva, Date> colFechaSalida;
+
+    @FXML
+    private TableColumn<Reserva, BigDecimal> colValor;
+
+    @FXML
+    private TableColumn<Reserva, String> colFormaPago;
+
+    @FXML
     private void initialize() {
         inicializarTablaHuespedes();
-        
+        inicializarTablaReservas();
     }
 
     public void agregarNuevoHuesped() {
@@ -110,7 +134,7 @@ public class MainController {
     }
 
     public void eliminarReserva() {
-        
+
     }
 
     public void eliminarHuesped() {
@@ -149,11 +173,30 @@ public class MainController {
         tblHuespedes.setItems(obtenerHuespedes());
     }
 
+    private void inicializarTablaReservas() {
+        colIdReserva.setCellValueFactory(new PropertyValueFactory<Reserva, Integer>("id"));
+        colHuesped.setCellValueFactory(new PropertyValueFactory<Reserva, String>("huesped"));
+        colFechaEntrada.setCellValueFactory(new PropertyValueFactory<Reserva, Date>("fechaEntrada"));
+        colFechaSalida.setCellValueFactory(new PropertyValueFactory<Reserva, Date>("fechaSalida"));
+        colValor.setCellValueFactory(new PropertyValueFactory<Reserva, BigDecimal>("valor"));
+        colFormaPago.setCellValueFactory(new PropertyValueFactory<Reserva, String>("formaPago"));
+
+        tblReservas.setItems(obtenerReservas());
+    }
+
     private ObservableList<Huesped> obtenerHuespedes() {
         try (HuespedDao dao = new HuespedDao()) {
             final List<Huesped> huespedes = dao.listarTodos();
 
             return FXCollections.observableArrayList(huespedes);
+        }
+    }
+
+    private ObservableList<Reserva> obtenerReservas() {
+        try (ReservaDao dao = new ReservaDao()) {
+            final List<Reserva> reservas = dao.listarTodos();
+
+            return FXCollections.observableArrayList(reservas);
         }
     }
 }
