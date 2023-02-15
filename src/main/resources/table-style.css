@@ -1,0 +1,15 @@
+.table-view {
+    -fx-background-color: transparent;
+}
+
+.table-row-cell {
+    -fx-background-color: rgba(0, 100, 100, 0.6);
+}
+
+.table-cell {
+    -fx-text-fill: white;
+}
+
+.table-view:row-selection .table-row-cell:filled:selected {
+    -fx-background-color: rgba(28, 183, 236, 0.65);
+}
