@@ -26,6 +26,9 @@ public class MainController {
     private TextField txtBuscarHuesped;
 
     @FXML
+    private TextField txtBuscarReserva;
+
+    @FXML
     private TableView<Huesped> tblHuespedes;
 
     @FXML
@@ -71,6 +74,45 @@ public class MainController {
     private void initialize() {
         inicializarTablaHuespedes();
         inicializarTablaReservas();
+    }
+
+    public void buscarHuesped() {
+        final String busqueda = txtBuscarHuesped.getText();
+
+        tblHuespedes.getItems()
+            .stream()
+            .filter(huesped -> huesped.getApellido().equalsIgnoreCase(busqueda))
+            .findAny()
+            .ifPresentOrElse(huesped -> {
+                tblHuespedes.getSelectionModel().select(huesped);
+                tblHuespedes.scrollTo(huesped);
+            }, () -> {
+                DialogUtils.mostrarInfo("Sin Resultados",
+                    "No se encontró a ningún huésped con apellido: " + busqueda);
+            });
+    }
+
+    public void buscarReserva() {
+        final String busqueda = txtBuscarReserva.getText();
+
+        try {
+            final int busquedaInt = Integer.parseInt(busqueda);
+
+            tblReservas.getItems()
+                .stream()
+                .filter(reserva -> reserva.getId() == busquedaInt)
+                .findAny()
+                .ifPresentOrElse(reserva -> {
+                    tblReservas.getSelectionModel().select(reserva);
+                    tblReservas.scrollTo(reserva);
+                }, () -> {
+                    DialogUtils.mostrarInfo("Sin Resultados",
+                        "No se encontró ninguna reserva con ID: " + busqueda);
+                });
+        } catch (NumberFormatException e) {
+            DialogUtils.mostrarInfo("Sin Resultados",
+                "No se encontró ninguna reserva con ID: " + busqueda);
+        }
     }
 
     public void agregarNuevoHuesped() {
