@@ -180,7 +180,13 @@ public class MainController {
     }
 
     public void verHuesped() {
+        final Reserva reserva = tblReservas.getSelectionModel().getSelectedItem();
 
+        if (reserva == null) {
+            DialogUtils.mostrarAdvertencia("Selección vacía", "Seleccione una reserva.");
+        } else {
+            DialogUtils.mostrarHuespedAsignadoAReserva(reserva);
+        }
     }
 
     public void modificarReserva() {

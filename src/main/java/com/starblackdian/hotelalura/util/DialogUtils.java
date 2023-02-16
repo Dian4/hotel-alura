@@ -277,6 +277,50 @@ public class DialogUtils {
         alert.show();
     }
 
+    public static void mostrarHuespedAsignadoAReserva(Reserva reserva) {
+        final Alert alert = new Alert(AlertType.INFORMATION);
+
+        alert.setTitle("Huésped Asignado");
+        alert.setHeaderText("Este es el huésped asignado a la reserva: " + reserva.getId());
+
+        final GridPane gridPane = new GridPane();
+
+        try (HuespedDao dao = new HuespedDao()) {
+            final Huesped huesped = dao.buscarPorId(reserva.getId());
+
+            gridPane.add(new Label("Id: "), 0, 0);
+            gridPane.add(new Label("Nombre: "), 0, 1);
+            gridPane.add(new Label("Apellido: "), 0, 2);
+            gridPane.add(new Label("Fecha de Nacimiento: "), 0, 3);
+            gridPane.add(new Label("Nacionalidad: "), 0, 4);
+            gridPane.add(new Label("Teléfono: "), 0, 5);
+
+            final TextField id = new TextField(Integer.toString(huesped.getId()));
+            final TextField nombre = new TextField(huesped.getNombre());
+            final TextField apellido = new TextField(huesped.getApellido());
+            final TextField fechaNac = new TextField(huesped.getFechaNacimiento().toString());
+            final TextField nacionalidad = new TextField(huesped.getNacionalidad());
+            final TextField telefono = new TextField(huesped.getTelefono());
+
+            id.setEditable(false);
+            nombre.setEditable(false);
+            apellido.setEditable(false);
+            fechaNac.setEditable(false);
+            nacionalidad.setEditable(false);
+            telefono.setEditable(false);
+
+            gridPane.add(id, 1, 0);
+            gridPane.add(nombre, 1, 1);
+            gridPane.add(apellido, 1, 2);
+            gridPane.add(fechaNac, 1, 3);
+            gridPane.add(nacionalidad, 1, 4);
+            gridPane.add(telefono, 1, 5);
+        }
+
+        alert.getDialogPane().setExpandableContent(gridPane);
+        alert.show();
+    }
+
     private static void mostrarAlert(String titulo, String cuerpo, AlertType tipoAlerta) {
         final Alert alert = new Alert(tipoAlerta);
 
